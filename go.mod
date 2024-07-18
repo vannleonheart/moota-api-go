@@ -1,4 +1,4 @@
-module moota-api-go
+module github.com/vannleonheart/moota-api-go
 
 go 1.21
 
