@@ -1,6 +1,10 @@
 package moota
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/vannleonheart/goutil"
+	"time"
+)
 
 func New(config Config) *Client {
 	return &Client{Config: config}
@@ -12,6 +16,7 @@ func (c *Client) SetToken(token string) {
 
 func (c *Client) WithToken(token string) *Client {
 	c.SetToken(token)
+
 	return c
 }
 
@@ -25,4 +30,30 @@ func (c *Client) getToken() (*string, error) {
 	}
 
 	return c.token, nil
+}
+
+func (c *Client) getTimestamp() string {
+	ts := time.Now().Format(DefaultTimestampFormat)
+
+	if loc, err := time.LoadLocation(DefaultTimezone); err == nil {
+		ts = time.Now().In(loc).Format(DefaultTimestampFormat)
+	}
+
+	return ts
+}
+
+func (c *Client) log(level string, data interface{}) {
+	if c.Config.Log != nil && c.Config.Log.Enable {
+		if c.Config.Log.Level == "error" && level != "error" {
+			return
+		}
+
+		msg := map[string]interface{}{
+			"timestamp": c.getTimestamp(),
+			"level":     level,
+			"data":      data,
+		}
+
+		_ = goutil.WriteJsonToFile(msg, c.Config.Log.Path, c.Config.Log.Filename, c.Config.Log.Extension, c.Config.Log.Rotation)
+	}
 }

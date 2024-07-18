@@ -9,6 +9,12 @@ func (c *Client) CreateTag(tag string) (*CreateTagResponse, error) {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "CreateTag",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return nil, err
 	}
 
@@ -26,9 +32,27 @@ func (c *Client) CreateTag(tag string) (*CreateTagResponse, error) {
 
 	var result CreateTagResponse
 
-	if _, err = goutil.SendHttpPost(endpoint, requestBody, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, &result); err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "CreateTag",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"body":    requestBody,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return nil, err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "CreateTag",
+		"url":     endpoint,
+		"body":    requestBody,
+		"headers": requestHeader,
+		"result":  result,
+	})
 
 	return &result, nil
 }
@@ -37,6 +61,12 @@ func (c *Client) UpdateTag(idTag string, tag string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "UpdateTag",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -52,9 +82,28 @@ func (c *Client) UpdateTag(idTag string, tag string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLCreateTag, idTag)
 
-	if _, err = goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "UpdateTag",
+			"error":   err,
+			"message": "error when send http put",
+			"url":     endpoint,
+			"body":    requestBody,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "UpdateTag",
+		"url":     endpoint,
+		"body":    requestBody,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -63,6 +112,12 @@ func (c *Client) DeleteTag(idTag string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "DeleteTag",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -74,9 +129,26 @@ func (c *Client) DeleteTag(idTag string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLCreateTag, idTag)
 
-	if _, err = goutil.SendHttpDelete(endpoint, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpDelete(endpoint, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "DeleteTag",
+			"error":   err,
+			"message": "error when send http delete",
+			"url":     endpoint,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "DeleteTag",
+		"url":     endpoint,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }

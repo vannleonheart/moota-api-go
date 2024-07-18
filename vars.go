@@ -6,6 +6,9 @@ import (
 )
 
 const (
+	DefaultTimezone        = "Asia/Jakarta"
+	DefaultTimestampFormat = "2006-01-02 15:04:05"
+
 	URLGenerateToken = "/api/v2/auth/login"
 	URLDestroyToken  = "/api/v2/auth/logout"
 	URLListOfBank    = "/api/v2/bank/available"
@@ -32,7 +35,17 @@ type Client struct {
 }
 
 type Config struct {
-	BaseUrl string `json:"base_url"`
+	BaseUrl string     `json:"base_url"`
+	Log     *LogConfig `json:"log,omitempty"`
+}
+
+type LogConfig struct {
+	Enable    bool   `json:"enable"`
+	Level     string `json:"level"`
+	Path      string `json:"path"`
+	Filename  string `json:"filename"`
+	Extension string `json:"extension"`
+	Rotation  string `json:"rotation"`
 }
 
 type GeneralResponse struct {

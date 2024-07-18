@@ -9,6 +9,12 @@ func (c *Client) GetListOfBank(page, perPage uint8) (*GetListOfBankResponse, err
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "GetListOfBank",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return nil, err
 	}
 
@@ -27,9 +33,27 @@ func (c *Client) GetListOfBank(page, perPage uint8) (*GetListOfBankResponse, err
 
 	var result GetListOfBankResponse
 
-	if _, err = goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result); err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "GetListOfBank",
+			"error":   err,
+			"message": "error when send http get",
+			"url":     endpoint,
+			"query":   queryString,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return nil, err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "GetListOfBank",
+		"url":     endpoint,
+		"query":   queryString,
+		"headers": requestHeader,
+		"result":  result,
+	})
 
 	return &result, nil
 }
@@ -38,6 +62,12 @@ func (c *Client) BankAccounts(page, perPage uint8) (*BankAccountsResponse, error
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "BankAccounts",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return nil, err
 	}
 
@@ -56,9 +86,27 @@ func (c *Client) BankAccounts(page, perPage uint8) (*BankAccountsResponse, error
 
 	var result BankAccountsResponse
 
-	if _, err = goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result); err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "BankAccounts",
+			"error":   err,
+			"message": "error when send http get",
+			"url":     endpoint,
+			"query":   queryString,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return nil, err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "BankAccounts",
+		"url":     endpoint,
+		"query":   queryString,
+		"headers": requestHeader,
+		"result":  result,
+	})
 
 	return &result, nil
 }
@@ -67,6 +115,12 @@ func (c *Client) CreateBankAccount(data CreateBankAccountRequest) (*CreateBankAc
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "CreateBankAccount",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return nil, err
 	}
 
@@ -80,9 +134,27 @@ func (c *Client) CreateBankAccount(data CreateBankAccountRequest) (*CreateBankAc
 
 	var result CreateBankAccountResponse
 
-	if _, err = goutil.SendHttpPost(endpoint, data, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpPost(endpoint, data, &requestHeader, &result); err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "CreateBankAccount",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"body":    data,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return nil, err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "CreateBankAccount",
+		"url":     endpoint,
+		"body":    data,
+		"headers": requestHeader,
+		"result":  result,
+	})
 
 	return &result, nil
 }
@@ -91,6 +163,12 @@ func (c *Client) DeleteBankAccount(bankId string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "DeleteBankAccount",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -102,9 +180,26 @@ func (c *Client) DeleteBankAccount(bankId string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/destroy", c.Config.BaseUrl, URLBankAccounts, bankId)
 
-	if _, err = goutil.SendHttpPost(endpoint, nil, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "DeleteBankAccount",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "DeleteBankAccount",
+		"url":     endpoint,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -113,6 +208,12 @@ func (c *Client) RequestEWalletOTP(bankId string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "RequestEWalletOTP",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -124,9 +225,26 @@ func (c *Client) RequestEWalletOTP(bankId string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLRequestOTP, bankId)
 
-	if _, err = goutil.SendHttpPost(endpoint, nil, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "RequestEWalletOTP",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "RequestEWalletOTP",
+		"url":     endpoint,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -135,6 +253,12 @@ func (c *Client) VerifyEWalletOTP(bankId, otp string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "VerifyEWalletOTP",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -150,9 +274,28 @@ func (c *Client) VerifyEWalletOTP(bankId, otp string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLVerifyOTP, bankId)
 
-	if _, err = goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "VerifyEWalletOTP",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"body":    requestBody,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "VerifyEWalletOTP",
+		"url":     endpoint,
+		"body":    requestBody,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }

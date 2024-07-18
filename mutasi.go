@@ -9,6 +9,12 @@ func (c *Client) RefreshMutasi(bankId string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "RefreshMutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -20,9 +26,26 @@ func (c *Client) RefreshMutasi(bankId string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/refresh", c.Config.BaseUrl, URLBankAccounts, bankId)
 
-	if _, err = goutil.SendHttpPost(endpoint, nil, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "RefreshMutasi",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "RefreshMutasi",
+		"url":     endpoint,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -31,6 +54,12 @@ func (c *Client) Mutasi(transactiontype, bankId, start, end, tag *string, page, 
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "Mutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return nil, err
 	}
 
@@ -74,9 +103,27 @@ func (c *Client) Mutasi(transactiontype, bankId, start, end, tag *string, page, 
 
 	var result MutasiResponse
 
-	if _, err = goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result); err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "Mutasi",
+			"error":   err,
+			"message": "error when send http get",
+			"url":     endpoint,
+			"query":   querystring,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return nil, err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "Mutasi",
+		"url":     endpoint,
+		"query":   querystring,
+		"headers": requestHeader,
+		"result":  result,
+	})
 
 	return &result, nil
 }
@@ -109,6 +156,12 @@ func (c *Client) NoteMutasi(idMutasi, note string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "NoteMutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -124,9 +177,28 @@ func (c *Client) NoteMutasi(idMutasi, note string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/note", c.Config.BaseUrl, URLMutasi, idMutasi)
 
-	if _, err = goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "NoteMutasi",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"body":    requestBody,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "NoteMutasi",
+		"url":     endpoint,
+		"body":    requestBody,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -135,6 +207,12 @@ func (c *Client) PushWebHookMutasi(idMutasi string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "PushWebHookMutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -146,9 +224,26 @@ func (c *Client) PushWebHookMutasi(idMutasi string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/webhook", c.Config.BaseUrl, URLMutasi, idMutasi)
 
-	if _, err = goutil.SendHttpPost(endpoint, nil, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "PushWebHookMutasi",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "DeleteMutasi",
+		"url":     endpoint,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -157,6 +252,12 @@ func (c *Client) DeleteMutasi(idMutasi []string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "DeleteMutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -172,9 +273,28 @@ func (c *Client) DeleteMutasi(idMutasi []string) error {
 
 	endpoint := fmt.Sprintf("%s%s", c.Config.BaseUrl, URLDeleteMutasi)
 
-	if _, err = goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "DeleteMutasi",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"body":    requestBody,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "DeleteMutasi",
+		"url":     endpoint,
+		"body":    requestBody,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -183,6 +303,12 @@ func (c *Client) CreateTagMutasi(idMutasi string, tags []string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "CreateTagMutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -198,9 +324,28 @@ func (c *Client) CreateTagMutasi(idMutasi string, tags []string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLTagMutasi, idMutasi)
 
-	if _, err = goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "CreateTagMutasi",
+			"error":   err,
+			"message": "error when send http post",
+			"url":     endpoint,
+			"body":    requestBody,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "CreateTagMutasi",
+		"url":     endpoint,
+		"body":    requestBody,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -209,6 +354,12 @@ func (c *Client) UpdateTagMutasi(idMutasi string, tags []string) error {
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "UpdateTagMutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return err
 	}
 
@@ -224,9 +375,28 @@ func (c *Client) UpdateTagMutasi(idMutasi string, tags []string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLTagMutasi, idMutasi)
 
-	if _, err = goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil); err != nil {
+	raw, err := goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil)
+	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "UpdateTagMutasi",
+			"error":   err,
+			"message": "error when send http put",
+			"url":     endpoint,
+			"body":    requestBody,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "UpdateTagMutasi",
+		"url":     endpoint,
+		"body":    requestBody,
+		"headers": requestHeader,
+		"result":  raw,
+	})
 
 	return nil
 }
@@ -235,6 +405,12 @@ func (c *Client) SummaryMutasi(bankId, transactiontype, start, end *string) (*Su
 	token, err := c.getToken()
 
 	if err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "SummaryMutasi",
+			"error":   err,
+			"message": "error when get token",
+		})
+
 		return nil, err
 	}
 
@@ -265,9 +441,27 @@ func (c *Client) SummaryMutasi(bankId, transactiontype, start, end *string) (*Su
 
 	var result SummaryMutasiResponse
 
-	if _, err = goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result); err != nil {
+		c.log("error", map[string]interface{}{
+			"method":  "SummaryMutasi",
+			"error":   err,
+			"message": "error when send http get",
+			"url":     endpoint,
+			"query":   querystring,
+			"headers": requestHeader,
+			"result":  raw,
+		})
+
 		return nil, err
 	}
+
+	c.log("debug", map[string]interface{}{
+		"method":  "SummaryMutasi",
+		"url":     endpoint,
+		"query":   querystring,
+		"headers": requestHeader,
+		"result":  result,
+	})
 
 	return &result, nil
 }
