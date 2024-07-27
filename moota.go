@@ -3,6 +3,7 @@ package moota
 import (
 	"fmt"
 	"github.com/vannleonheart/goutil"
+	"net/http"
 	"time"
 )
 
@@ -16,6 +17,16 @@ func (c *Client) SetToken(token string) {
 
 func (c *Client) WithToken(token string) *Client {
 	c.SetToken(token)
+
+	return c
+}
+
+func (c *Client) SetHttpClient(cl *http.Client) {
+	c.httpClient = cl
+}
+
+func (c *Client) WithHttpClient(cl *http.Client) *Client {
+	c.SetHttpClient(cl)
 
 	return c
 }

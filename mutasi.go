@@ -26,7 +26,7 @@ func (c *Client) RefreshMutasi(bankId string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/refresh", c.Config.BaseUrl, URLBankAccounts, bankId)
 
-	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "RefreshMutasi",
@@ -103,7 +103,7 @@ func (c *Client) Mutasi(transactiontype, bankId, start, end, tag *string, page, 
 
 	var result MutasiResponse
 
-	if raw, err := goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result, c.httpClient); err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "Mutasi",
 			"error":   err,
@@ -145,7 +145,7 @@ func (c *Client) CreateDummyMutasi(bankId string, data CreateMutasiRequest) erro
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLCreateMutasi, bankId)
 
-	if _, err = goutil.SendHttpPost(endpoint, data, &requestHeader, nil); err != nil {
+	if _, err = goutil.SendHttpPost(endpoint, data, &requestHeader, nil, c.httpClient); err != nil {
 		return err
 	}
 
@@ -177,7 +177,7 @@ func (c *Client) NoteMutasi(idMutasi, note string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/note", c.Config.BaseUrl, URLMutasi, idMutasi)
 
-	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "NoteMutasi",
@@ -224,7 +224,7 @@ func (c *Client) PushWebHookMutasi(idMutasi string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/webhook", c.Config.BaseUrl, URLMutasi, idMutasi)
 
-	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "PushWebHookMutasi",
@@ -273,7 +273,7 @@ func (c *Client) DeleteMutasi(idMutasi []string) error {
 
 	endpoint := fmt.Sprintf("%s%s", c.Config.BaseUrl, URLDeleteMutasi)
 
-	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "DeleteMutasi",
@@ -324,7 +324,7 @@ func (c *Client) CreateTagMutasi(idMutasi string, tags []string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLTagMutasi, idMutasi)
 
-	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "CreateTagMutasi",
@@ -375,7 +375,7 @@ func (c *Client) UpdateTagMutasi(idMutasi string, tags []string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLTagMutasi, idMutasi)
 
-	raw, err := goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil)
+	raw, err := goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "UpdateTagMutasi",
@@ -441,7 +441,7 @@ func (c *Client) SummaryMutasi(bankId, transactiontype, start, end *string) (*Su
 
 	var result SummaryMutasiResponse
 
-	if raw, err := goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, querystring, &requestHeader, &result, c.httpClient); err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "SummaryMutasi",
 			"error":   err,

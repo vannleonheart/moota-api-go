@@ -21,7 +21,7 @@ func (c *Client) GenerateToken(email, password string) (*GenerateTokenResponse, 
 
 	var result GenerateTokenResponse
 
-	if raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, &result, c.httpClient); err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "GenerateToken",
 			"error":   err,
@@ -66,7 +66,7 @@ func (c *Client) DestroyToken() error {
 
 	endpoint := fmt.Sprintf("%s%s", c.Config.BaseUrl, URLDestroyToken)
 
-	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "DestroyToken",

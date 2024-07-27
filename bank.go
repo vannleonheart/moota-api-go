@@ -33,7 +33,7 @@ func (c *Client) GetListOfBank(page, perPage uint8) (*GetListOfBankResponse, err
 
 	var result GetListOfBankResponse
 
-	if raw, err := goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result, c.httpClient); err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "GetListOfBank",
 			"error":   err,
@@ -86,7 +86,7 @@ func (c *Client) BankAccounts(page, perPage uint8) (*BankAccountsResponse, error
 
 	var result BankAccountsResponse
 
-	if raw, err := goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpGet(endpoint, queryString, &requestHeader, &result, c.httpClient); err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "BankAccounts",
 			"error":   err,
@@ -134,7 +134,7 @@ func (c *Client) CreateBankAccount(data CreateBankAccountRequest) (*CreateBankAc
 
 	var result CreateBankAccountResponse
 
-	if raw, err := goutil.SendHttpPost(endpoint, data, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpPost(endpoint, data, &requestHeader, &result, c.httpClient); err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "CreateBankAccount",
 			"error":   err,
@@ -180,7 +180,7 @@ func (c *Client) DeleteBankAccount(bankId string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s/destroy", c.Config.BaseUrl, URLBankAccounts, bankId)
 
-	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "DeleteBankAccount",
@@ -225,7 +225,7 @@ func (c *Client) RequestEWalletOTP(bankId string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLRequestOTP, bankId)
 
-	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, nil, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "RequestEWalletOTP",
@@ -274,7 +274,7 @@ func (c *Client) VerifyEWalletOTP(bankId, otp string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLVerifyOTP, bankId)
 
-	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil)
+	raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "VerifyEWalletOTP",

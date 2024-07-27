@@ -2,6 +2,7 @@ package moota
 
 import (
 	"encoding/json"
+	"net/http"
 	"time"
 )
 
@@ -30,8 +31,9 @@ const (
 )
 
 type Client struct {
-	Config Config
-	token  *string
+	Config     Config
+	token      *string
+	httpClient *http.Client
 }
 
 type Config struct {
