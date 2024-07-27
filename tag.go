@@ -32,7 +32,7 @@ func (c *Client) CreateTag(tag string) (*CreateTagResponse, error) {
 
 	var result CreateTagResponse
 
-	if raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, &result); err != nil {
+	if raw, err := goutil.SendHttpPost(endpoint, requestBody, &requestHeader, &result, c.httpClient); err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "CreateTag",
 			"error":   err,
@@ -82,7 +82,7 @@ func (c *Client) UpdateTag(idTag string, tag string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLCreateTag, idTag)
 
-	raw, err := goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil)
+	raw, err := goutil.SendHttpPut(endpoint, requestBody, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "UpdateTag",
@@ -129,7 +129,7 @@ func (c *Client) DeleteTag(idTag string) error {
 
 	endpoint := fmt.Sprintf("%s%s/%s", c.Config.BaseUrl, URLCreateTag, idTag)
 
-	raw, err := goutil.SendHttpDelete(endpoint, &requestHeader, nil)
+	raw, err := goutil.SendHttpDelete(endpoint, &requestHeader, nil, c.httpClient)
 	if err != nil {
 		c.log("error", map[string]interface{}{
 			"method":  "DeleteTag",
