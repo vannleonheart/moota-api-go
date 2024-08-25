@@ -126,13 +126,13 @@ type BankAccount struct {
 	Label              string       `json:"label"`
 	LastUpdate         time.Time    `json:"last_update"`
 	Icon               string       `json:"icon"`
-	IsBig              bool         `json:"is_big"`
+	IsBig              interface{}  `json:"is_big"`
 	Pkg                interface{}  `json:"pkg"`
 	Status             interface{}  `json:"status"`
 	IpAddress          *string      `json:"ip_address"`
 	IpAddressExpiredAt *string      `json:"ip_address_expired_at"`
-	IsAutoStart        bool         `json:"is_auto_start"`
-	IsCrawling         bool         `json:"is_crawling"`
+	IsAutoStart        interface{}  `json:"is_auto_start"`
+	IsCrawling         interface{}  `json:"is_crawling"`
 }
 
 type CreateBankAccountRequest struct {
